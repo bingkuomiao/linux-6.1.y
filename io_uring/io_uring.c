@@ -582,6 +582,16 @@ static inline void __io_cq_unlock_post(struct io_ring_ctx *ctx)
 	io_cqring_ev_posted(ctx);
 }
 
+static inline void __io_cq_unlock_post_flush(struct io_ring_ctx *ctx)
+	__releases(ctx->completion_lock)
+{
+	io_commit_cqring(ctx);
+	spin_unlock(&ctx->completion_lock);
+	io_commit_cqring_flush(ctx);
+	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
+		__io_cqring_wake(ctx);
+}
+
 void io_cq_unlock_post(struct io_ring_ctx *ctx)
 {
 	__io_cq_unlock_post(ctx);
@@ -592,6 +602,8 @@ static bool __io_cqring_overflow_flush(struct io_ring_ctx *ctx, bool force)
 {
 	bool all_flushed;
 	size_t cqe_size = sizeof(struct io_uring_cqe);
+
+	lockdep_assert_held(&ctx->uring_lock);
 
 	if (!force && __io_cqring_events(ctx) == ctx->cq_entries)
 		return false;
@@ -647,12 +659,9 @@ static bool io_cqring_overflow_flush(struct io_ring_ctx *ctx)
 	bool ret = true;
 
 	if (test_bit(IO_CHECK_CQ_OVERFLOW_BIT, &ctx->check_cq)) {
-		/* iopoll syncs against uring_lock, not completion_lock */
-		if (ctx->flags & IORING_SETUP_IOPOLL)
-			mutex_lock(&ctx->uring_lock);
+		mutex_lock(&ctx->uring_lock);
 		ret = __io_cqring_overflow_flush(ctx, false);
-		if (ctx->flags & IORING_SETUP_IOPOLL)
-			mutex_unlock(&ctx->uring_lock);
+		mutex_unlock(&ctx->uring_lock);
 	}
 
 	return ret;
@@ -1340,7 +1349,7 @@ static void __io_submit_flush_completions(struct io_ring_ctx *ctx)
 		if (!(req->flags & REQ_F_CQE_SKIP))
 			__io_fill_cqe_req(ctx, req);
 	}
-	__io_cq_unlock_post(ctx);
+	__io_cq_unlock_post_flush(ctx);
 
 	io_free_batch_list(ctx, state->compl_reqs.first);
 	INIT_WQ_LIST(&state->compl_reqs);
@@ -1404,6 +1413,8 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, long min)
 	unsigned int nr_events = 0;
 	int ret = 0;
 	unsigned long check_cq;
+
+	lockdep_assert_held(&ctx->uring_lock);
 
 	if (!io_allowed_run_tw(ctx))
 		return -EEXIST;
@@ -3920,8 +3931,10 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
 	}
 
 	if (sqd) {
+		mutex_unlock(&ctx->uring_lock);
 		mutex_unlock(&sqd->lock);
 		io_put_sq_data(sqd);
+		mutex_lock(&ctx->uring_lock);
 	}
 
 	if (copy_to_user(arg, new_count, sizeof(new_count)))
@@ -3946,8 +3959,11 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
 	return 0;
 err:
 	if (sqd) {
+		mutex_unlock(&ctx->uring_lock);
 		mutex_unlock(&sqd->lock);
 		io_put_sq_data(sqd);
+		mutex_lock(&ctx->uring_lock);
+
 	}
 	return ret;
 }
