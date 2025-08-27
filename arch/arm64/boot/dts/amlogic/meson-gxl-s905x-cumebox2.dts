@@ -20,6 +20,19 @@
 		reg = <0x0 0x0 0x0 0x80000000>;// 2G
 	};
 
+	reserved-memory {
+	    #address-cells = <2>;
+	    #size-cells = <2>;
+	    ranges;
+	
+	    linux,cma {
+	        compatible = "shared-dma-pool";
+	        reg = <0x0 0x23000000 0x0 0x2000000>; // 32MB
+	        reusable;
+	        linux,cma-default;
+	    };
+	};
+
 	dio2133: analog-amplifier {
 		compatible = "simple-audio-amplifier";
 		sound-name-prefix = "AU2";
@@ -128,12 +141,12 @@
 			color = <LED_COLOR_ID_YELLOW>;
 			gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
-			linux,default-trigger = "netdev";
+			linux,default-trigger = "mdio_mux-0.1:08:link";
 		};
 		
 		led_act {
 			label = "led_act";
-			color = <LED_COLOR_ID_YELLOW>;
+			color = <LED_COLOR_ID_GREEN>;
 			gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;
 			default-state = "off";
 			linux,default-trigger = "netdev";
@@ -288,4 +301,5 @@
 &mali {
 	status = "okay";
 };
+
 
