@@ -286,16 +286,6 @@
 };
 
 &mali {
-	mali-supply=<&vddgpu>;
 	status = "okay";
 };
-
-
-
-
-
-
-
-
-
 
