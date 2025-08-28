@@ -29,7 +29,7 @@
 	
 	    linux,cma {
 	        compatible = "shared-dma-pool";
-	        reg = <0x0 0x23000000 0x0 0x2000000>; // 32MB
+	        reg = <0x0 0x23000000 0x0 0x1000000>; // 16MB
 	        reusable;
 	        linux,cma-default;
 	    };
@@ -113,47 +113,51 @@
 	};
 
 	leds {
-		compatible = "gpio-leds";
-		led_blue {
-			label = "led_blue";
-			color = <LED_COLOR_ID_BLUE>;
-			gpios = <&gpio GPIODV_24 GPIO_ACTIVE_HIGH>; // 73  gpio 474
-			default-state = "off";
-			linux,default-trigger = "default-on";
-		};
-		
-		led_red {
-			label = "led_red";
-			color = <LED_COLOR_ID_RED>;
-			function = LED_FUNCTION_POWER;
-			gpios = <&gpio GPIODV_26 GPIO_ACTIVE_HIGH>; // 75 gpio 476
-			default-state = "off";
-			panic-indicator;
-		};
-		
-		led_green {
-			label = "led_green";
-			color = <LED_COLOR_ID_GREEN>;
-			gpios = <&gpio GPIODV_27 GPIO_ACTIVE_HIGH>; // 76  gpio 477
-			default-state = "off";
-		};
+	    compatible = "gpio-leds";
+        pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>; // 复用现有网口灯引脚组
+	    pinctrl-names = "default";
 
-		led_link {
-			label = "led_link";
-			color = <LED_COLOR_ID_YELLOW>;
-			gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;
-			default-state = "off";
-			linux,default-trigger = "mdio_mux-0.1:08:link";
-		};
-		
-		led_act {
-			label = "led_act";
-			color = <LED_COLOR_ID_GREEN>;
-			gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;
-			default-state = "off";
-			linux,default-trigger = "netdev";
-		};
-	};
+	    /* 网口指示灯 */
+	    eth_link_led: eth_link_led {
+	        label = "eth_link_led";
+	        gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;  // 硬件引脚：GPIOZ_14
+	        linux,default-trigger = "mdio_mux-0.1:08:link";           // 触发方式：跟随网口状态
+	    };
+	
+	    eth_act_led: eth_act_led {
+	        label = "eth_act_led";
+	        gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;  // 硬件引脚：GPIOZ_15
+	        linux,default-trigger = "netdev";
+	    };
+	
+	    /* 系统状态指示灯 */
+	    led_blue: led_blue {
+	        label = "led_blue";
+	        color = <LED_COLOR_ID_BLUE>;
+            function = LED_FUNCTION_STATUS;
+	        gpios = <&gpio GPIODV_24 GPIO_ACTIVE_HIGH>; // 硬件引脚：GPIODV_24（全局编号474）
+	        default-state = "off";                      // 初始状态：关闭
+	        linux,default-trigger = "default-on";       // 触发方式：默认常亮
+	    };
+	
+	    led_red: led_red {
+	        label = "led_red";
+	        color = <LED_COLOR_ID_RED>;
+	        function = LED_FUNCTION_POWER;              // 功能标识：电源指示灯
+	        gpios = <&gpio GPIODV_26 GPIO_ACTIVE_HIGH>; // 硬件引脚：GPIODV_26（全局编号476）
+	        default-state = "off";
+	        panic-indicator;                            // 特性：系统崩溃时点亮
+	    };
+	
+	    led_green: led_green {
+	        label = "led_green";
+	        color = <LED_COLOR_ID_GREEN>;
+            function = LED_FUNCTION_HEARTBEAT;
+	        gpios = <&gpio GPIODV_27 GPIO_ACTIVE_HIGH>; // 硬件引脚：GPIODV_27（全局编号477）
+	        default-state = "off";
+	        //linux,default-trigger = "heartbeat";
+	    };
+    };
 
 	thermal-zones {
 		cpu-thermal {
@@ -235,6 +239,25 @@
 		};
 	};
 
+	dc_in: regulator-vcc_12v {
+		compatible = "regulator-fixed";
+		regulator-name = "VCC_12V";
+		regulator-min-microvolt = <12000000>;
+		regulator-max-microvolt = <12000000>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
+	vddgpu: regulator-vddgpu {
+		compatible = "regulator-fixed";
+		regulator-name = "mali";
+		regulator-min-microvolt = <950000>;
+		regulator-max-microvolt = <950000>;
+		vin-supply = <&dc_in>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+
 	openvfd {
 		compatible = "open,vfd";
 		dev_name = "openvfd";
@@ -271,6 +294,10 @@
 	hdmi-supply = <&hdmi_5v>;
 };
 
+&ethmac {
+    status = "okay";
+};
+
 &hdmi_tx_tmds_port {
 	hdmi_tx_tmds_out: endpoint {
 		remote-endpoint = <&hdmi_connector_in>;
@@ -290,7 +317,7 @@
 	clock-frequency = < 400000 >;
 
 	ssd1306: oled@3c {
-                status = "okay";
+        status = "okay";
 		compatible = "solomon,ssd1306fb-i2c";
 		reg = < 0x3c >;
 		solomon,width = < 128 >;
@@ -301,8 +328,17 @@
 };
 
 &mali {
+    mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
+
+
+
+
+
+
+
 
 
 
