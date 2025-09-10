@@ -11,8 +11,6 @@
 #include <dt-bindings/input/input.h>
 #include <dt-bindings/sound/meson-aiu.h>
 
-/delete-node/ &{/reserved-memory/linux,cma};
-
 / {
 	compatible = "amlogic,p212", "amlogic,s905x", "amlogic,meson-gxl";
 	model = "Amlogic Meson GXL (S905X) CumeBox2 Board";
@@ -20,19 +18,6 @@
 	memory@0 {
 		device_type = "memory";
 		reg = <0x0 0x0 0x0 0x80000000>;// 2G
-	};
-
-	reserved-memory {
-	    #address-cells = <2>;
-	    #size-cells = <2>;
-	    ranges;
-	
-	    linux,cma {
-	        compatible = "shared-dma-pool";
-	        reg = <0x0 0x23000000 0x0 0x1000000>; // 16MB
-	        reusable;
-	        linux,cma-default;
-	    };
 	};
 
 	dio2133: analog-amplifier {
@@ -57,57 +42,6 @@
 		port {
 			hdmi_connector_in: endpoint {
 				remote-endpoint = <&hdmi_tx_tmds_out>;
-			};
-		};
-	};
-
-	sound {
-		compatible = "amlogic,gx-sound-card";
-		model = "S905X-P212";
-		audio-aux-devs = <&dio2133>;
-		audio-widgets = "Line", "Lineout";
-		audio-routing = "AU2 INL", "ACODEC LOLN",
-				"AU2 INR", "ACODEC LORN",
-				"Lineout", "AU2 OUTL",
-				"Lineout", "AU2 OUTR";
-		assigned-clocks = <&clkc CLKID_MPLL0>,
-				  <&clkc CLKID_MPLL1>,
-				  <&clkc CLKID_MPLL2>;
-		assigned-clock-parents = <0>, <0>, <0>;
-		assigned-clock-rates = <294912000>,
-				       <270950400>,
-				       <393216000>;
-		status = "okay";
-
-		dai-link-0 {
-			sound-dai = <&aiu AIU_CPU CPU_I2S_FIFO>;
-		};
-
-		dai-link-1 {
-			sound-dai = <&aiu AIU_CPU CPU_I2S_ENCODER>;
-			dai-format = "i2s";
-			mclk-fs = <256>;
-
-			codec-0 {
-				sound-dai = <&aiu AIU_HDMI CTRL_I2S>;
-			};
-
-			codec-1 {
-				sound-dai = <&aiu AIU_ACODEC CTRL_I2S>;
-			};
-		};
-
-		dai-link-2 {
-			sound-dai = <&aiu AIU_HDMI CTRL_OUT>;
-			codec-0 {
-				sound-dai = <&hdmi_tx>;
-			};
-		};
-
-		dai-link-3 {
-			sound-dai = <&aiu AIU_ACODEC CTRL_OUT>;
-			codec-0 {
-				sound-dai = <&acodec>;
 			};
 		};
 	};
@@ -200,10 +134,10 @@
 				map2 {
 					trip = <&cpu_critical>;
 					cooling-device = <&gpio_fan THERMAL_NO_LIMIT 1>,
-				              <&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-				              <&cpu1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-				              <&cpu2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
-				              <&cpu3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
+				          <&cpu0 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+				          <&cpu1 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+				          <&cpu2 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>,
+				          <&cpu3 THERMAL_NO_LIMIT THERMAL_NO_LIMIT>;
 				};
 			};
 		};
@@ -238,25 +172,6 @@
 			linux,code = <KEY_FN_F2>;
 			gpios = <&gpio_ao GPIOAO_6 GPIO_ACTIVE_LOW>;  //6 gpio 507
 		};
-	};
-
-	dc_in: regulator-vcc_12v {
-		compatible = "regulator-fixed";
-		regulator-name = "VCC_12V";
-		regulator-min-microvolt = <12000000>;
-		regulator-max-microvolt = <12000000>;
-		regulator-boot-on;
-		regulator-always-on;
-	};
-
-	vddgpu: regulator-vddgpu {
-		compatible = "regulator-fixed";
-		regulator-name = "mali";
-		regulator-min-microvolt = <950000>;
-		regulator-max-microvolt = <950000>;
-		vin-supply = <&dc_in>;
-		regulator-boot-on;
-		regulator-always-on;
 	};
 
 	openvfd {
@@ -328,7 +243,4 @@
 	};
 };
 
-&mali {
-    mali-supply=<&vddgpu>;
-	status = "okay";
-};
+
