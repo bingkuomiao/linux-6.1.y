@@ -255,20 +255,6 @@
 	};
 };
 
-&mdio {
-    external_phy: ethernet-phy@8 {
-        reg = <8>;
-        max-speed = <1000>;
-
-        // 尝试配置PHY内部LED
-        led-modes = <0x00>, <0x02>; /* LED0: 关闭, LED1: 活动闪烁 */
-        
-        // 或者使用realtek兼容模式（虽然你的PHY是Amlogic的）
-        realtek,led-0-mode = <0>;  // 关闭
-        realtek,led-1-mode = <2>;  // 活动闪烁
-    };
-};
-
 &ethmac {
     status = "okay";
     pinctrl-0 = <&eth_rgmii_pins>;
