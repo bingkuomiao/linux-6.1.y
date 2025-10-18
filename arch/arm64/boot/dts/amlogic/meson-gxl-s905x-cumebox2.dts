@@ -255,3 +255,37 @@
 	};
 };
 
+&mdio {
+    external_phy: ethernet-phy@8 {
+        reg = <8>;
+        max-speed = <1000>;
+
+        // 尝试配置PHY内部LED
+        led-modes = <0x00>, <0x02>; /* LED0: 关闭, LED1: 活动闪烁 */
+        
+        // 或者使用realtek兼容模式（虽然你的PHY是Amlogic的）
+        realtek,led-0-mode = <0>;  // 关闭
+        realtek,led-1-mode = <2>;  // 活动闪烁
+    };
+};
+
+&ethmac {
+    status = "okay";
+    pinctrl-0 = <&eth_rgmii_pins>;
+    pinctrl-names = "default";
+    phy-handle = <&external_phy>;
+    phy-mode = "rgmii";
+    
+    /* 确保PHY复位正确 */
+    snps,reset-gpio = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
+    snps,reset-delays-us = <0 10000 30000>;
+    snps,reset-active-low;
+    
+    /* 启用MAC层面的统计，有助于用户空间监控 */
+    amlogic,tx-delay-ps = <2000>;
+    amlogic,rx-delay-ps = <2000>;
+};
+
+
+
+
