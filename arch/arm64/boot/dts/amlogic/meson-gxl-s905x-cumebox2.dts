@@ -65,7 +65,7 @@
 	};
 
 	leds {
-	    compatible = "gpio-leds";
+	  compatible = "gpio-leds";
 		pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
 		pinctrl-names = "default";
 
@@ -75,20 +75,20 @@
 	        linux,default-trigger = "mdio_mux-0.e40908ff:08:link";
 	    };
 	
-        eth_act_led: eth_act_led {
+      eth_act_led: eth_act_led {
             label = "eth_act_led";
             gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;
             linux,default-trigger = "none";
-        };
+      };
 	
 	    led_blue: led_blue {
 	        label = "led_blue";
 	        color = <LED_COLOR_ID_BLUE>;
-            function = LED_FUNCTION_STATUS;
+          function = LED_FUNCTION_STATUS;
 	        gpios = <&gpio GPIODV_24 GPIO_ACTIVE_HIGH>; 
 	        default-state = "off";        
 	        linux,default-trigger = "default-on";           
-            panic-indicator-inhibit;                         
+          panic-indicator-inhibit;                         
 	    };
 	
 	    led_red: led_red {
@@ -96,14 +96,14 @@
 	        color = <LED_COLOR_ID_RED>;
 	        function = LED_FUNCTION_PANIC;                   
 	        gpios = <&gpio GPIODV_26 GPIO_ACTIVE_HIGH>;       
-	        default-state = "off";
+	        default-state = "on";
 	        panic-indicator;                                  
 	    };
 	
 	    led_green: led_green {
 	        label = "led_green";
 	        color = <LED_COLOR_ID_GREEN>;
-            function = LED_FUNCTION_HEARTBEAT;
+          function = LED_FUNCTION_HEARTBEAT;
 	        gpios = <&gpio GPIODV_27 GPIO_ACTIVE_HIGH>;       
 	        default-state = "off";
 	        //linux,default-trigger = "heartbeat";
@@ -245,7 +245,7 @@
 	clock-frequency = < 400000 >;
 
 	ssd1306: oled@3c {
-        status = "okay";
+    status = "okay";
 		compatible = "solomon,ssd1306fb-i2c";
 		reg = < 0x3c >;
 		solomon,width = < 128 >;
