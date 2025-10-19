@@ -250,10 +250,3 @@
     };
 };
 
-&ethmac {
-    status = "okay";
-    pinctrl-0 = <&eth_rgmii_pins>;
-    pinctrl-names = "default";
-    phy-handle = <&external_phy>;
-    phy-mode = "rgmii";
-};
