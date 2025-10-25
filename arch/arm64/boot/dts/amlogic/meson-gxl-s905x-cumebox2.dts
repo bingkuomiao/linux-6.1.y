@@ -94,13 +94,13 @@
 
         eth_link_led: eth_link_led {
             label = "eth_link_led";
-            gpios = <&gpio GPIOZ_25 GPIO_ACTIVE_HIGH>;
+            gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;
             linux,default-trigger = "mdio_mux-0.e40908ff:08:link";
         };
     
         eth_act_led: eth_act_led {
             label = "eth_act_led";
-            gpios = <&gpio GPIOZ_26 GPIO_ACTIVE_HIGH>;
+            gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;
             linux,default-trigger = "none";
         };
     
@@ -288,4 +288,5 @@
     pinctrl-names = "default";
     phy-mode = "rgmii";
 };
+
 
