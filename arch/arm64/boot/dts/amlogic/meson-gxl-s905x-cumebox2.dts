@@ -33,13 +33,6 @@
         };
     };
 
-    dio2133: analog-amplifier {
-        compatible = "simple-audio-amplifier";
-        sound-name-prefix = "AU2";
-        VCC-supply = <&hdmi_5v>;
-        enable-gpios = <&gpio GPIOH_5 GPIO_ACTIVE_HIGH>;
-    };
-
     cvbs-connector {
         compatible = "composite-video-connector";
         port {
@@ -59,6 +52,41 @@
         };
     };
 
+    sound {
+        compatible = "amlogic,gx-sound-card";
+        model = "cumebox2";
+        assigned-clocks = <&clkc CLKID_MPLL0>,
+                  <&clkc CLKID_MPLL1>,
+                  <&clkc CLKID_MPLL2>;
+        assigned-clock-parents = <0>, <0>, <0>;
+        assigned-clock-rates = <294912000>,
+                       <270950400>,
+                       <393216000>;
+        status = "okay";
+
+        dai-link-0 {
+            sound-dai = <&aiu AIU_CPU CPU_I2S_FIFO>;
+        };
+
+        dai-link-1 {
+            sound-dai = <&aiu AIU_CPU CPU_I2S_ENCODER>;
+            dai-format = "i2s";
+            mclk-fs = <256>;
+
+            codec-0 {
+                sound-dai = <&aiu AIU_HDMI CTRL_I2S>;
+            };
+        };
+
+        dai-link-2 {
+            sound-dai = <&aiu AIU_HDMI CTRL_OUT>;
+
+            codec-0 {
+                sound-dai = <&hdmi_tx>;
+            };
+        };
+    };
+
     leds {
         compatible = "gpio-leds";
         pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
@@ -66,13 +94,13 @@
 
         eth_link_led: eth_link_led {
             label = "eth_link_led";
-            gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;
+            gpios = <&gpio GPIOZ_25 GPIO_ACTIVE_HIGH>;
             linux,default-trigger = "mdio_mux-0.e40908ff:08:link";
         };
     
         eth_act_led: eth_act_led {
             label = "eth_act_led";
-            gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;
+            gpios = <&gpio GPIOZ_26 GPIO_ACTIVE_HIGH>;
             linux,default-trigger = "none";
         };
     
@@ -248,5 +276,16 @@
         solomon,page-offset = < 0 >;
         solomon,com-invdir;
     };
+};
+
+&hdmi_5v {
+    regulator-always-on;
+};
+
+&ethmac {
+    status = "okay";
+    pinctrl-0 = <&eth_rgmii_pins>;
+    pinctrl-names = "default";
+    phy-mode = "rgmii";
 };
 
