@@ -303,9 +303,10 @@
     pinctrl-names = "default";
     
     /* 明确指定LED GPIO和极性 */
-    amlogic,led-link = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;  // 尝试ACTIVE_LOW
-    amlogic,led-act = <&gpio GPIOZ_15 GPIO_ACTIVE_LOW>;   // 尝试ACTIVE_LOW
+    amlogic,led-link = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;  // 尝试ACTIVE_LOW
+    amlogic,led-act = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;   // 尝试ACTIVE_LOW
 };
+
 
 
 
