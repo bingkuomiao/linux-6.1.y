@@ -287,9 +287,24 @@
     snps,reset-active-low;
 };
 
+&pinctrl_periphs {
+    /* 修复以太网LED引脚配置 */
+    eth_leds_pins: eth-leds {
+        mux {
+            groups = "eth_link_led", "eth_act_led";
+            function = "eth";
+            bias-pull-up; /* 或尝试 bias-pull-down */
+        };
+    };
+};
+
 &internal_phy {
-	pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
-	pinctrl-names = "default";
+    pinctrl-0 = <&eth_leds_pins>;
+    pinctrl-names = "default";
+    
+    /* 明确指定LED GPIO和极性 */
+    amlogic,led-link = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;  // 尝试ACTIVE_LOW
+    amlogic,led-act = <&gpio GPIOZ_15 GPIO_ACTIVE_LOW>;   // 尝试ACTIVE_LOW
 };
 
 
