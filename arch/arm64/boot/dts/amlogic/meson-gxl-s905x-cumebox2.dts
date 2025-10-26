@@ -15,10 +15,10 @@
     compatible = "amlogic,cumebox2", "amlogic,s905x", "amlogic,meson-gxl";
     model = "Amlogic Meson GXL (S905X) CumeBox2 Board";
 
-	aliases {
-		serial0 = &uart_AO;
-		ethernet0 = &ethmac;
-	};
+    aliases {
+    serial0 = &uart_AO;
+    ethernet0 = &ethmac;
+    };
 
     memory@0 {
         device_type = "memory";
@@ -282,9 +282,8 @@
     pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
     pinctrl-names = "default";
     
-    /* 明确指定LED GPIO和极性 */
-    amlogic,led-link = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;
-    amlogic,led-act = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;
+    amlogic,led-link = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
+    amlogic,led-act = <&gpio GPIOZ_15 GPIO_ACTIVE_LOW>;
 };
 
 
