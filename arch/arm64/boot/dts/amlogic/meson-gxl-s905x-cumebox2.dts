@@ -94,21 +94,6 @@
 
     leds {
         compatible = "gpio-leds";
-        pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
-        pinctrl-names = "default";
-
-        eth_link_led: eth_link_led {
-            label = "eth_link_led";
-            gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;
-            linux,default-trigger = "mdio_mux-0.e40908ff:08:link";
-        };
-    
-        eth_act_led: eth_act_led {
-            label = "eth_act_led";
-            gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;
-            linux,default-trigger = "none";
-        };
-    
         led_blue: led_blue {
             label = "led_blue";
             color = <LED_COLOR_ID_BLUE>;
@@ -293,4 +278,8 @@
 	phy-handle = <&internal_phy>;
 };
 
+&internal_phy {
+	pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
+	pinctrl-names = "default";
+};
 
