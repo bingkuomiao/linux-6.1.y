@@ -273,13 +273,23 @@
 };
 
 &ethmac {
-	status = "okay";
-	phy-mode = "rmii";
-	phy-handle = <&internal_phy>;
+    status = "okay";
+    phy-mode = "rmii";
+    phy-handle = <&internal_phy>;
+    
+    /* 添加LED极性控制 */
+    amlogic,tx-delay-ns = <2>;
+    amlogic,rx-delay-ns = <2>;
+    
+    /* 强制LED极性 */
+    snps,reset-gpio = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
+    snps,reset-delays-us = <0 10000 1000000>;
+    snps,reset-active-low;
 };
 
 &internal_phy {
 	pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
 	pinctrl-names = "default";
 };
+
 
