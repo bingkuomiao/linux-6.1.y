@@ -15,6 +15,11 @@
     compatible = "amlogic,cumebox2", "amlogic,s905x", "amlogic,meson-gxl";
     model = "Amlogic Meson GXL (S905X) CumeBox2 Board";
 
+	aliases {
+		serial0 = &uart_AO;
+		ethernet0 = &ethmac;
+	};
+
     memory@0 {
         device_type = "memory";
         reg = <0x0 0x0 0x0 0x80000000>;// 2G
@@ -283,10 +288,9 @@
 };
 
 &ethmac {
-    status = "okay";
-    phy-mode = "rgmii";
-    phy-handle = <&internal_phy>;
+	status = "okay";
+	phy-mode = "rmii";
+	phy-handle = <&internal_phy>;
 };
-
 
 
