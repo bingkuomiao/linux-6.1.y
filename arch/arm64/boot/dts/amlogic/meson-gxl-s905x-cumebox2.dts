@@ -293,7 +293,7 @@
         mux {
             groups = "eth_link_led", "eth_act_led";
             function = "eth";
-            bias-pull-up; /* 或尝试 bias-pull-down */
+            bias-pull-down; /* 或尝试 bias-pull-down */
         };
     };
 };
@@ -306,5 +306,6 @@
     amlogic,led-link = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;  // 尝试ACTIVE_LOW
     amlogic,led-act = <&gpio GPIOZ_15 GPIO_ACTIVE_LOW>;   // 尝试ACTIVE_LOW
 };
+
 
 
