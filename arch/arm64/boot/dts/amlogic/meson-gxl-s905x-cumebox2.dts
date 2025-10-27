@@ -286,20 +286,27 @@
     status = "okay";
 };
 
+&pinctrl_periphs {
+    /* 修复以太网LED引脚配置 */
+    eth_link_led_pins_fixed: eth-link-led-fixed {
+        mux {
+            groups = "eth_link_led";
+            function = "eth_led";
+            bias-disable;
+        };
+    };
+
+    eth_act_led_pins_fixed: eth-act-led-fixed {
+        mux {
+            groups = "eth_act_led";
+            function = "eth_led";
+            bias-disable;
+        };
+    };
+};
+
 &internal_phy {
-    pinctrl-0 = <&eth_link_led_pins>, <&eth_act_led_pins>;
+    pinctrl-0 = <&eth_link_led_pins_fixed>, <&eth_act_led_pins_fixed>;
     pinctrl-names = "default";
-    
-    amlogic,led-link = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
-    amlogic,led-act = <&gpio GPIOZ_15 GPIO_ACTIVE_LOW>;
 };
-
-&mali {
-	status = "okay";
-};
-
-
-
-
-
 
