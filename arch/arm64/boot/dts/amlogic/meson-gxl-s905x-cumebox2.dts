@@ -282,10 +282,6 @@
     };
 };
 
-&hdmi_5v {
-    regulator-always-on;
-};
-
 &ethmac {
     status = "okay";
 };
@@ -301,6 +297,7 @@
 &mali {
 	status = "okay";
 };
+
 
 
 
