@@ -274,8 +274,6 @@
 
 &ethmac {
     status = "okay";
-    phy-mode = "rmii";
-    phy-handle = <&internal_phy>;
 };
 
 &internal_phy {
@@ -285,6 +283,7 @@
     amlogic,led-link = <&gpio GPIOZ_14 GPIO_ACTIVE_LOW>;
     amlogic,led-act = <&gpio GPIOZ_15 GPIO_ACTIVE_LOW>;
 };
+
 
 
 
