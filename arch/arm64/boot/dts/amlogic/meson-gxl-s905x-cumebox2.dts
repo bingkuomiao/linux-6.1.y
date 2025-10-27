@@ -325,7 +325,7 @@
 };
 
 &internal_phy {
-    pinctrl-0 = <&eth_link_led_pins_fixed>, <&eth_act_led_pins_fixed>;
+    pinctrl-0 = <&eth_link_led_pins_fixed>, <&eth_act_led_pins_fixed>; //415 416
     pinctrl-names = "default";
 };
 
@@ -333,3 +333,4 @@
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
