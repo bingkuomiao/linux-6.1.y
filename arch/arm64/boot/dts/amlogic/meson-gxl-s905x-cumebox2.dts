@@ -311,7 +311,7 @@
         mux {
             groups = "eth_link_led";
             function = "eth_led";
-            bias-disable;
+            bias-pull-up;
         };
     };
 
@@ -319,7 +319,7 @@
         mux {
             groups = "eth_act_led";
             function = "eth_led";
-            bias-disable;
+            bias-pull-up;
         };
     };
 };
