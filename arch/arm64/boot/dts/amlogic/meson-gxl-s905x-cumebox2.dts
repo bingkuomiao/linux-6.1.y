@@ -311,7 +311,7 @@
         mux {
             groups = "eth_link_led";
             function = "eth_led";
-            bias-pull-down;
+            bias-disable;
         };
     };
 
@@ -319,7 +319,7 @@
         mux {
             groups = "eth_act_led";
             function = "eth_led";
-            bias-pull-down;
+            bias-disable;
         };
     };
 };
@@ -333,4 +333,5 @@
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
 
