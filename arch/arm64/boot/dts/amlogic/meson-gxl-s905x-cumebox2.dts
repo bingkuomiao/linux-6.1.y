@@ -136,14 +136,14 @@
             //linux,default-trigger = "heartbeat";
         };
 
-        eth_led_link: eth-link {
+        eth_led_link: led_link {
             label = "end0:link";  /* 重要：格式必须为 <interface>:<function> */
             gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;  /* 537 */
             linux,default-trigger = "netdev";
             default-state = "off";
         };
 
-        eth_led_act: eth-act {
+        eth_led_act: led_act {
             label = "end0:activity";  /* 重要：格式必须为 <interface>:<function> */
             gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;  /* 538 */
             linux,default-trigger = "netdev";
@@ -319,12 +319,11 @@
     status = "okay";
 };
 
-
-
 &mali {
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
 
 
 
