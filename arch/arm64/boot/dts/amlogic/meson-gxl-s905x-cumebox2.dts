@@ -135,6 +135,20 @@
             default-state = "off";
             //linux,default-trigger = "heartbeat";
         };
+
+        eth_led_link: eth-link {
+            label = "end0:link";  /* 重要：格式必须为 <interface>:<function> */
+            gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;  /* 537 */
+            linux,default-trigger = "netdev";
+            default-state = "off";
+        };
+
+        eth_led_act: eth-act {
+            label = "end0:activity";  /* 重要：格式必须为 <interface>:<function> */
+            gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;  /* 538 */
+            linux,default-trigger = "netdev";
+            default-state = "off";
+        };
     };
 
     thermal-zones {
@@ -305,35 +319,13 @@
     status = "okay";
 };
 
-&pinctrl_periphs {
-    eth_link_led_pins_fixed: eth-link-led-fixed {
-        mux {
-            groups = "eth_link_led";
-            function = "eth_led";
-            bias-pull-up;
-            output-high;
-        };
-    };
 
-    eth_act_led_pins_fixed: eth-act-led-fixed {
-        mux {
-            groups = "eth_act_led";
-            function = "eth_led";
-            bias-pull-up;
-            output-high;
-        };
-    };
-};
-
-&internal_phy {
-    pinctrl-0 = <&eth_link_led_pins_fixed>, <&eth_act_led_pins_fixed>;// 537 538
-    pinctrl-names = "default";
-};
 
 &mali {
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
 
 
 
