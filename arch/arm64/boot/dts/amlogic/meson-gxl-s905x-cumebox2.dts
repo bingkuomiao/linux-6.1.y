@@ -30,8 +30,8 @@
 	};
 
     aliases {
-    serial0 = &uart_AO;
-    ethernet0 = &ethmac;
+        serial0 = &uart_AO;
+        ethernet0 = &ethmac;
     };
 
     memory@0 {
@@ -108,6 +108,7 @@
 
     leds {
         compatible = "gpio-leds";
+
         led_blue: led-blue {
             label = "led-blue";
             color = <LED_COLOR_ID_BLUE>;
@@ -324,6 +325,7 @@
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
 
 
 
