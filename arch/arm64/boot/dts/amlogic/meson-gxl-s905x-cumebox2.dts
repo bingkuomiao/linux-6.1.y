@@ -124,7 +124,7 @@
             color = <LED_COLOR_ID_RED>;
             function = LED_FUNCTION_PANIC;                   
             gpios = <&gpio GPIODV_26 GPIO_ACTIVE_HIGH>;       //476
-            default-state = "on";
+            default-state = "off";
             panic-indicator;                                  
         };
     
@@ -139,17 +139,17 @@
 
         /*如果要使用netdev功能，必须使用<接口名>:<功能>格式的labe*/
         eth_led_link: net-link {
-            label = "eth0:link";      /* 使用固定的eth0 */
+            label = "end0:link";
             gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>; //537
             linux,default-trigger = "netdev";
-            default-state = "off";
+            default-state = "on";
         };
 
         eth_led_act: net-act {
-            label = "eth0:activity";  /* 使用固定的eth0 */
+            label = "end0:activity";
             gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>; //538
             linux,default-trigger = "netdev";
-            default-state = "off";
+            default-state = "on";
         };
     };
 
