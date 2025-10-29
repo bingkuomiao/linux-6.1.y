@@ -108,8 +108,8 @@
 
     leds {
         compatible = "gpio-leds";
-        led_blue: led_blue {
-            label = "led_blue";
+        led_blue: led-blue {
+            label = "led-blue";
             color = <LED_COLOR_ID_BLUE>;
             function = LED_FUNCTION_STATUS;
             gpios = <&gpio GPIODV_24 GPIO_ACTIVE_HIGH>;     //474
@@ -118,8 +118,8 @@
             panic-indicator-inhibit;                         
         };
     
-        led_red: led_red {
-            label = "led_red";
+        led_red: led-red {
+            label = "led-red";
             color = <LED_COLOR_ID_RED>;
             function = LED_FUNCTION_PANIC;                   
             gpios = <&gpio GPIODV_26 GPIO_ACTIVE_HIGH>;       //476
@@ -127,8 +127,8 @@
             panic-indicator;                                  
         };
     
-        led_green: led_green {
-            label = "led_green";
+        led_green: led-green {
+            label = "led-green";
             color = <LED_COLOR_ID_GREEN>;
             function = LED_FUNCTION_HEARTBEAT;
             gpios = <&gpio GPIODV_27 GPIO_ACTIVE_HIGH>;       //477
@@ -136,16 +136,17 @@
             //linux,default-trigger = "heartbeat";
         };
 
-        eth_led_link: led_link {
-            label = "end0:link";  /* 重要：格式必须为 <interface>:<function> */
-            gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;  /* 537 */
+        /*如果要使用netdev功能，必须使用<接口名>:<功能>格式的labe*/
+        eth_led_link: net-link {
+            label = "eth0:link";      /* 使用固定的eth0 */
+            gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>; //537
             linux,default-trigger = "netdev";
             default-state = "off";
         };
 
-        eth_led_act: led_act {
-            label = "end0:activity";  /* 重要：格式必须为 <interface>:<function> */
-            gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;  /* 538 */
+        eth_led_act: net-act {
+            label = "eth0:activity";  /* 使用固定的eth0 */
+            gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>; //538
             linux,default-trigger = "netdev";
             default-state = "off";
         };
@@ -323,6 +324,7 @@
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
 
 
 
