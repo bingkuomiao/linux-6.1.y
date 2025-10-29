@@ -16,18 +16,18 @@
     compatible = "khadas,vim", "amlogic,s905x", "amlogic,meson-gxl";
     model = "Amlogic Meson GXL (S905X) CumeBox2 Board";
 
-	reserved-memory {
-	    #address-cells = <2>;
-	    #size-cells = <2>;
-	    ranges;
-	
-	    linux,cma {
-	        compatible = "shared-dma-pool";
-	        reg = <0x0 0x23000000 0x0 0x1000000>; // 16MB
-	        reusable;
-	        linux,cma-default;
-	    };
-	};
+    reserved-memory {
+        #address-cells = <2>;
+        #size-cells = <2>;
+        ranges;
+
+        linux,cma {
+            compatible = "shared-dma-pool";
+            reg = <0x0 0x23000000 0x0 0x1000000>; // 16MB
+            reusable;
+            linux,cma-default;
+        };
+    };
 
     aliases {
         serial0 = &uart_AO;
@@ -142,14 +142,14 @@
             label = "end0:link";
             gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>; //537
             linux,default-trigger = "netdev";
-            default-state = "on";
+            default-state = "off";
         };
 
         eth_led_act: net-act {
             label = "end0:activity";
             gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>; //538
             linux,default-trigger = "netdev";
-            default-state = "on";
+            default-state = "off";
         };
     };
 
