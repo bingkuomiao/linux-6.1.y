@@ -137,20 +137,21 @@
             //linux,default-trigger = "heartbeat";
         };
 
-        /*如果要使用netdev功能，必须使用<接口名>:<功能>格式的labe*/
         eth_led_link: net-link {
             label = "end0:link";
-            gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>; //537
+            gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;         //537
             linux,default-trigger = "netdev";
             trigger-sources = <&ethmac>;
+            device-name = "end0";
             default-state = "off";
         };
 
         eth_led_act: net-act {
             label = "end0:activity";
-            gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>; //538
+            gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;        //538
             linux,default-trigger = "netdev";
             trigger-sources = <&ethmac>;
+            device-name = "end0";
             default-state = "off";
         };
     };
@@ -327,6 +328,7 @@
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
 
 
 
