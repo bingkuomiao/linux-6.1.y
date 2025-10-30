@@ -138,20 +138,16 @@
         };
 
         eth_led_link: net-link {
-            label = "end0:link";
+            label = "led-link";
             gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;         //537
             linux,default-trigger = "netdev";
-            trigger-sources = <&ethmac>;
-            device-name = "end0";
             default-state = "off";
         };
 
         eth_led_act: net-act {
-            label = "end0:activity";
+            label = "led-activity"; 
             gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>;        //538
             linux,default-trigger = "netdev";
-            trigger-sources = <&ethmac>;
-            device-name = "end0";
             default-state = "off";
         };
     };
@@ -328,6 +324,7 @@
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
 
 
 
