@@ -142,6 +142,7 @@
             label = "end0:link";
             gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>; //537
             linux,default-trigger = "netdev";
+            trigger-sources = <&ethmac>;
             default-state = "off";
         };
 
@@ -149,6 +150,7 @@
             label = "end0:activity";
             gpios = <&gpio GPIOZ_15 GPIO_ACTIVE_HIGH>; //538
             linux,default-trigger = "netdev";
+            trigger-sources = <&ethmac>;
             default-state = "off";
         };
     };
@@ -325,6 +327,7 @@
     mali-supply=<&vddgpu>;
 	status = "okay";
 };
+
 
 
 
