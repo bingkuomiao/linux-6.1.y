@@ -13,7 +13,7 @@
 
 /delete-node/ &{/reserved-memory/linux,cma};
 / {
-    compatible = "khadas,vim", "amlogic,s905x", "amlogic,meson-gxl";
+    compatible = "amlogic,p212", "amlogic,s905x", "amlogic,meson-gxl";
     model = "Amlogic Meson GXL (S905X) CumeBox2 Board";
 
     reserved-memory {
