@@ -101,7 +101,7 @@
             default-state = "off";
             //linux,default-trigger = "heartbeat";
         };
-
+/*
         eth_led_link: net-link {
             label = "led-link";
             gpios = <&gpio GPIOZ_14 GPIO_ACTIVE_HIGH>;         //537
@@ -115,6 +115,7 @@
             linux,default-trigger = "netdev";
             default-state = "off";
         };
+*/
     };
 
     thermal-zones {
