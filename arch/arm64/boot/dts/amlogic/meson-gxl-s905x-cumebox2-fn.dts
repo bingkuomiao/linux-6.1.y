@@ -15,19 +15,6 @@
     compatible = "amlogic,p212", "amlogic,s905x", "amlogic,meson-gxl";
     model = "Amlogic Meson GXL (S905X) CumeBox2 Board";
 
-    reserved-memory {
-        #address-cells = <2>;
-        #size-cells = <2>;
-        ranges;
-
-        linux,cma {
-            compatible = "shared-dma-pool";
-            reg = <0x0 0x23000000 0x0 0x1000000>; // 16MB
-            reusable;
-            linux,cma-default;
-        };
-    };
-
     aliases {
         serial0 = &uart_AO;
         ethernet0 = &ethmac;
